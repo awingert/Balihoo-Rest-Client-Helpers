@@ -1,0 +1,83 @@
+<div><h2>Customer List Management API Specification</h2></div>
+<div><h4>HTTP Headers</h4></div>
+<table border="1" width="100%">
+	<tr>
+		<th>Header Name</th>
+		<th>Description</th>
+		<th>Required</th>
+	</tr>
+	<tr>
+		<td>X-Auth-Token</td>
+		<td>The API key supplied to you by Balihoo</td>
+		<td>Yes</td>
+	</tr>
+</table>
+<div><h4>HTTP GET Service</h4></div>
+<table border="1" width="100%">
+	<tr>
+		<th>Parameters</th>
+		<th>Resulting Action</th>
+		<th>Example URI</th>
+	</tr>
+	<tr>
+		<td>None</td>
+		<td>All contacts are returned</td>
+		<td>http://clm.balihoo.com/contact</td>
+	</tr>
+	<tr>
+		<td>Contact ID</td>
+		<td>Only the requested contact is returned, if found.</td>
+		<td>http://clm.balihoo.com/contact/4da4ca854fae881d3b0000a6</td>
+	</tr>
+	<tr>
+		<td>"status" and batch ID</td>
+		<td>The status of the given batch is returned. Returns "completed" if the batch is not found to be running.</td>
+		<td>http://clm.balihoo.com/contact/status/4da4ca854fae881d3b0000a6</td>
+	</tr>
+</table>
+<div><h4>HTTP DELETE Service</h4></div>
+<table border="1" width="100%">
+	<tr>
+		<th>Parameters</th>
+		<th>Resulting Action</th>
+		<th>Example URI</th>
+	</tr>
+	<tr>
+		<td>Contact ID</td>
+		<td>Deletes the contact matching the given ID, if found.</td>
+		<td>http://clm.balihoo.com/contact/4da4ca854fae881d3b0000a6</td>
+	</tr>
+</table>
+<div><h4>HTTP POST Service</h4></div>
+<table border="1" width="100%">
+	<tr>
+		<th>Parameters</th>
+		<th>Resulting Action</th>
+	</tr>
+	<tr>
+		<td>
+			command=load<br/>
+			contacts=[JSON Encoded Array of Contacts]
+		</td>
+		<td>Queues the given contacts for loading into your contact database. A Batch ID is returned that can be used to query the status of the loading process.</td>
+	</tr>
+	<tr>
+		<td>
+			command=count<br/>
+			[optional]query=[JSON Encoded query]<br/>
+			[optional]view=[Email|DirectMail|MainPhone|MobilePhone]
+		</td>
+		<td>Returns a count of contacts matching the given query and distinct to the given view.</td>
+	</tr>
+	<tr>
+		<td>
+			command=count<br/>
+			[optional]query=[JSON Encoded query]<br/>
+			[optional]view=[Email|DirectMail|MainPhone|MobilePhone]
+		</td>
+		<td>Returns a JSON encoded array of the contacts matching the given query and distinct to the given view. If two or more contacts are considered equal in the current view,
+			the contact last updated will be returned.</td>
+	</tr>
+</table>
+<div><h4>HTTP PUT Service</h4></div>
+<div>Currently unused.</div>

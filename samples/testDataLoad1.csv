@@ -1,0 +1,4 @@
+Name, AddressLine1, AddressLine2, City, State, Zip, Email
+"John Doe", "404 s 123rd st", "", "Boise", "ID", "83702", "johndoe@example.com"
+"Jane Doe", "404 s 8th st", "Suite 300", "Boise", "ID", "83702", "janedoe@example.com"
+
