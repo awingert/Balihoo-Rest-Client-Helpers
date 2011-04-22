@@ -1,0 +1,6 @@
+Balihoo Rest Client Helpers
+
+Basic functionality to use the Balihoo Contact Management services.
+
+Requirements:
+php: php 5, php curl libraries
