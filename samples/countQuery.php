@@ -24,9 +24,12 @@ $results = $balihooClient->query(null, null);
 print("List of all addresses :". print_r($results,true)."\n\n"); 
 
 
+$query = array("Zip"=>"83702");
+$results = $balihooClient->query($query, BalihooRestClient::VIEW_EMAIL);
+print("List of addresses with Zip Code = 83702 :". print_r($results,true)."\n\n");
+
 // queries by Zip should use a regular expression as the dataload process may 
 // turn a Zip into a Zip9 e.g. 83702-7133
-
 $query = array("Zip"=>array("\$regex"=> "83702.*"));
 $results = $balihooClient->query($query, BalihooRestClient::VIEW_EMAIL);
 print("List of all addresses in Zip Code 83702 :". print_r($results,true)."\n\n"); 
