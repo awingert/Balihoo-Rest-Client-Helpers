@@ -67,11 +67,11 @@ class BalihooRestClient
 		return $result;
 	}
 	
-	public function query($inQuery, $view)
+	public function query($inQuery, $view, $limit)
 	{
 		$command = BalihooRestClient::COMMAND_QUERY;
 		$queryEncode = json_encode($inQuery);
-		$query = array('command'=>$command, 'query'=>$queryEncode, 'view'=>$view);
+		$query = array('command'=>$command, 'query'=>$queryEncode, 'view'=>$view, 'limit'=>$limit);
 		
 		$result = $this->runQuery($command, $query,  $this->getFullUrl());
 		return $result;
@@ -179,11 +179,16 @@ class BalihooRestClient
 	}
 	
 	private function getFullUrl() 
-	{	
-		if ($this->insecure)
-			$fullUrl = "http://".$this->url;
-		else
-			$fullUrl = "https://".$this->url;
+	{
+		if (strstr($this->url, 'http') === false) {
+			if ($this->insecure)
+				$fullUrl = "http://".$this->url;
+			else
+				$fullUrl = "https://".$this->url;
+		} else {
+			$fullUrl = $this->url;
+		}
+			
 		return $fullUrl;
 	}
 	

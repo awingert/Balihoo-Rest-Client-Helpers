@@ -12,13 +12,16 @@ $balihooClient->setInsecure();
 
 // Count an Email List
 $results = $balihooClient->count(null, BalihooRestClient::VIEW_EMAIL);
-print("Email view count with no query :". print_r($results['count'],true)."\n\n"); 
+print("Email view count with no query :". print_r($results['count'],true)."\n\n");
 
 $results = $balihooClient->count(null, null);
 print("Count of all items :". print_r($results['count'],true)."\n\n"); 
 
 $results = $balihooClient->query(null, BalihooRestClient::VIEW_EMAIL);
-print("List of all email addresses :". print_r($results,true)."\n\n"); 
+print("List of all email addresses :". print_r($results,true)."\n\n");
+
+$results = $balihooClient->query(null, BalihooRestClient::VIEW_EMAIL, 5);
+print("List of first 5 email addresses :". print_r($results,true)."\n\n");
 
 $results = $balihooClient->query(null, null);
 print("List of all addresses :". print_r($results,true)."\n\n"); 
