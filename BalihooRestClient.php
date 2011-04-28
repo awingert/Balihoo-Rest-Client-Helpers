@@ -67,7 +67,7 @@ class BalihooRestClient
 		return $result;
 	}
 	
-	public function query($inQuery, $view, $limit)
+	public function query($inQuery, $view, $limit = null)
 	{
 		$command = BalihooRestClient::COMMAND_QUERY;
 		$queryEncode = json_encode($inQuery);
