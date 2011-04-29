@@ -15,6 +15,7 @@ class BalihooRestClient
 {
 	const COMMAND_LOAD = 'load';
 	const COMMAND_COUNT = 'count';
+	const COMMAND_DISTINCT = 'distinct';
 	const COMMAND_QUERY = 'query';
 	const COMMAND_STATUS = 'status';
 	const COMMAND_GET = 'get';
@@ -66,13 +67,13 @@ class BalihooRestClient
 		$result = $this->runQuery($command, $query, $this->getFullUrl());
 		return $result;
 	}
-	
+
 	public function query($inQuery, $view, $limit = null)
-	{
-		$command = BalihooRestClient::COMMAND_QUERY;
-		$queryEncode = json_encode($inQuery);
+ 	{
+ 		$command = BalihooRestClient::COMMAND_QUERY;
+ 		$queryEncode = json_encode($inQuery);
 		$query = array('command'=>$command, 'query'=>$queryEncode, 'view'=>$view, 'limit'=>$limit);
-		
+ 		
 		$result = $this->runQuery($command, $query,  $this->getFullUrl());
 		return $result;
 	}
@@ -100,6 +101,17 @@ class BalihooRestClient
 		$result = $this->runQuery($command, null, $overrideurl);
 		return $result;	
 	}
+
+	public function distinct($keys)
+	{
+		$command = self::COMMAND_DISTINCT;
+		$keysEncode = json_encode($keys);
+		$data = array('command'=>$command, 'keys'=>$keysEncode);
+		
+		$result = $this->runQuery($command, $data, $this->getFullUrl());
+		return $result;
+	}
+
 	
 	
 	private function runQuery($command, $data, $url) 
@@ -196,17 +208,12 @@ class BalihooRestClient
 	{
 		switch(strtolower($command)) {
 			case BalihooRestClient::COMMAND_LOAD: 
-				$method = 'POST'; 
-				break;
+			case BalihooRestClient::COMMAND_DISTINCT: 
 			case BalihooRestClient::COMMAND_QUERY: 
-				$method = 'POST'; 
-				break;
 			case BalihooRestClient::COMMAND_COUNT: 
-				$method = 'POST'; 
+				$method = 'POST';
 				break;
 			case BalihooRestClient::COMMAND_STATUS: 
-				$method = 'GET'; 
-				break;
 			case BalihooRestClient::COMMAND_GET: 
 				$method = 'GET'; 
 				break;
