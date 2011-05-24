@@ -130,7 +130,7 @@ class BalihooRestClient
 			curl_setopt($s, CURLOPT_PROXY, $this->proxy); 
 			
 	    curl_setopt($s,CURLOPT_HEADER, true); 
-	    curl_setopt($s,CURLOPT_TIMEOUT,4);
+	    curl_setopt($s,CURLOPT_TIMEOUT,20);
 	   
 		switch(strtoupper($method)) {
 			case "GET":
