@@ -20,6 +20,8 @@ class BalihooRestClient
 	const COMMAND_STATUS = 'status';
 	const COMMAND_GET = 'get';
 	const COMMAND_DELETE = 'delete';
+	const COMMAND_FIELDS = 'fields';
+	const COMMAND_COMMUNICATION = 'communication';
 	
 	const VIEW_EMAIL = 'Email';
 	const VIEW_DIRECTMAIL = 'DirectMail';
@@ -39,13 +41,26 @@ class BalihooRestClient
 		$this->url = $url;
 	}
 	
-	// WARNING: only call this in sample or test environments with sample/test authKeys.  
-	// do not send production authKeys over unencrypted channels.
+	/**
+	 * WARNING: only call this in sample or test environments with sample/test authKeys.
+	 * do not send production authKeys over unencrypted channels.
+	 * @return void
+	 */
 	public function setInsecure()
 	{
 		$this->insecure = true;
 	}
-	
+
+	public function fields()
+	{
+		$command = BalihooRestClient::COMMAND_FIELDS;
+
+		$query = array('command'=>$command);
+
+		$result = $this->runQuery($command,$query, $this->getFullUrl());
+		return $result;
+	}
+
 	public function load($data)
 	{
 		$command = BalihooRestClient::COMMAND_LOAD;
@@ -112,7 +127,15 @@ class BalihooRestClient
 		return $result;
 	}
 
-	
+	public function logCommunication($view, $communicationId, $keyCodes) {
+		$command = self::COMMAND_COMMUNICATION;
+		$keyCodesEncode = json_encode($keyCodes);
+		$data = array('command'=>$command, 'view'=>$view, 'communicationId'=>$communicationId, 'keyCodes'=>$keyCodesEncode);
+
+		$result = $this->runQuery($command, $data, $this->getFullUrl());
+		return $result;
+	}
+
 	
 	private function runQuery($command, $data, $url) 
 	{
@@ -130,8 +153,8 @@ class BalihooRestClient
 			curl_setopt($s, CURLOPT_PROXY, $this->proxy); 
 			
 	    curl_setopt($s,CURLOPT_HEADER, true); 
-	    curl_setopt($s,CURLOPT_TIMEOUT,20);
-	   
+	    curl_setopt($s,CURLOPT_TIMEOUT,100);
+
 		switch(strtoupper($method)) {
 			case "GET":
 				curl_setopt($s, CURLOPT_HTTPGET, TRUE);
@@ -210,7 +233,9 @@ class BalihooRestClient
 			case BalihooRestClient::COMMAND_LOAD: 
 			case BalihooRestClient::COMMAND_DISTINCT: 
 			case BalihooRestClient::COMMAND_QUERY: 
-			case BalihooRestClient::COMMAND_COUNT: 
+			case BalihooRestClient::COMMAND_COUNT:
+			case BalihooRestClient::COMMAND_FIELDS:
+			case BalihooRestClient::COMMAND_COMMUNICATION:
 				$method = 'POST';
 				break;
 			case BalihooRestClient::COMMAND_STATUS: 
@@ -220,8 +245,8 @@ class BalihooRestClient
 			case BalihooRestClient::COMMAND_DELETE: 
 				$method = 'DELETE'; 
 				break;
-			default: 
-				throw new BalihooRestException("No method associatted with Command: ".$command);
+			default:
+				throw new BalihooRestException("No method associated with Command: ".$command);
 		}
 		
 		return $method;	
